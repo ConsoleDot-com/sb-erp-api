@@ -1,4 +1,4 @@
-Bills Of Quantity Calculations and Rules
+# Bills Of Quantity Calculations and Rules
 
 Rules:
  1. File name should be formatted as [Floor_Name]Floor.xlsx. E.g. FirstFloor.xlsx or SecondFloor.xlsx.
