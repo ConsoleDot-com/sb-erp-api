@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "tsc --project tsconfig.build.json && node dist/app.js",
-    "dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' src/app.ts",
+    "dev": "nodemon --watch 'src/**' src/app.ts",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
