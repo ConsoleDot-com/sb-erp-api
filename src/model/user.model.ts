@@ -1,8 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
 // Create a new Sequelize instance
-const sequelize = new Sequelize('sb_erp_api', 'console_dot', 'hEllo@911', {
-    host: 'db4free.net',
+const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.USER, process.env.MYSQL_PASSWORD, {
+    host: process.env.HOST,
     dialect: 'mysql'
   });
 
