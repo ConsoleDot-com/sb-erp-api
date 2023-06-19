@@ -91,10 +91,20 @@ const Mutation = new GraphQLObjectType({
         password: { type: GraphQLString },
         role: { type: GraphQLString },
       },
-      resolve(parent, args, context) {
+      resolve: async(parent, args, context)=> {
         // Ensure the user is authenticated
         if (!context.user) {
           throw new Error("Authentication required");
+        }
+
+        if(args.role === "super admin"){
+          throw new Error("Super Admin already exist, please choose other role");
+        }
+
+        let user = await Login.findOne({ where: { cnic: args.cnic } });
+
+        if (user) {
+          throw new Error("CNIC with different role already exists");
         }
 
         let role = new Login({
