@@ -2,7 +2,8 @@ const express = require("express");
 const { sqlConnect } = require("./helper/db-connect");
 var cors = require('cors')
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
+require("dotenv").config("../.env");
 const port = 3000;
 const {router} = require('./routes/auth.routes');
 const { authMiddleware } = require("./middleware/auth.middleware");
