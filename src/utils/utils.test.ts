@@ -26,35 +26,35 @@ const {
 
 describe("Wall CFT", () => {
   test("Calculate Wall CFT", () => {
-    expect(calculateWallCft(2, 3, 4)).toBe(24);
+    expect(calculateWallCft(34.25, 0.25, 1.5)).toBe(12.84375);
   });
 });
 
 describe("Bricks", () => {
   test("Calculate Bricks", () => {
-    expect(calculateBricks(calculateWallCft(2, 3, 4))).toBe(324);
+    expect(calculateBricks(calculateWallCft(34.25, 0.25, 1.5))).toBe(173.390625);
   });
 });
 
 describe("Dry Material ", () => {
   test("Calculate Dry Material", () => {
-    expect(dryMaterial(calculateWallCft(5, 15, 2))).toBe(195);
+    expect(dryMaterial(calculateWallCft(34.25, 0.25, 1.5))).toBe(16.696875);
   });
 });
 
 describe("Sand CFT", () => {
   test("Calculate Sand CFT", () => {
     expect(
-      calculateSandCft(4, 1, dryMaterial(calculateWallCft(5, 15, 2)))
-    ).toBe(156);
+      calculateSandCft(1, 4, dryMaterial(calculateWallCft(34.25, 0.25, 1.5)))
+    ).toBe(3.339375);
   });
 });
 
 describe("Cement CFT", () => {
   test("Calculate Cement CFT", () => {
     expect(
-      calculateCementBags(4, 1, dryMaterial(calculateWallCft(5, 15, 2)))
-    ).toBe(195);
+      calculateCementBags(4, 1, dryMaterial(calculateWallCft(34.25, 0.25, 1.5)))
+    ).toBe(16.696875);
   });
 });
 
@@ -72,7 +72,7 @@ describe("Dry Quantity of Plaster", () => {
 
 describe("Termite ", () => {
   test("Calculate Termite ", () => {
-    expect(calculateTermite(50, 45)).toBe(4.33);
+    expect(calculateTermite(25, 45)).toBe(2.08);
   });
 });
 

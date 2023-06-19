@@ -35,7 +35,7 @@ const dryQuantityOfPlaster = (wetquantityofplaster: number) =>
   wetquantityofplaster * 1.27;
 
 const calculateTermite = (length: number, width: number) =>
-  parseFloat(((length * width) / 520).toFixed(2));
+  parseFloat(((length * width) / 540).toFixed(2));
 
 const calculateMembraneSheet = (length: number, width: number) =>
   length * width;
@@ -53,7 +53,7 @@ const calculateBajarSandCft = (
   sandportion: number,
   cementportion: number,
   bajarportion: number,
-  dryMaterial: any
+  dryMaterial: number
 ) => {
   const portionSum = sandportion + cementportion + bajarportion;
   return (sandportion / portionSum) * dryMaterial;
@@ -63,7 +63,7 @@ const calculateBajarCementCft = (
   sandportion: number,
   cementportion: number,
   bajarportion: number,
-  dryMaterial: any
+  dryMaterial: number
 ) => {
   const portionSum = sandportion + cementportion + bajarportion;
   const cementCft = (cementportion / portionSum) * dryMaterial;
@@ -83,7 +83,7 @@ const calculateCrushSandCft = (
   sandportion: number,
   cementportion: number,
   bajarportion: number,
-  dryMaterial: any
+  dryMaterial: number
 ) => {
   const portionSum = sandportion + cementportion + bajarportion;
   return (sandportion / portionSum) * dryMaterial;
@@ -93,7 +93,7 @@ const calculateCrushCementCft = (
   sandportion: number,
   cementportion: number,
   bajarportion: number,
-  dryMaterial: any
+  dryMaterial: number
 ) => {
   const portionSum = sandportion + cementportion + bajarportion;
   const cementCft = (cementportion / portionSum) * dryMaterial;
