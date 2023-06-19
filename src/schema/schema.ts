@@ -66,16 +66,16 @@ const Mutation = new GraphQLObjectType({
     login: {
       type: GraphQLString,
       args: {
-        email: { type: GraphQLString },
+        cnic: { type: GraphQLString },
         password: { type: GraphQLString },
       },
       resolve: async (parent, args) => {
-        const user = await User.findOne({
-          where: { email: args.email, password: args.password },
+        const user = await Login.findOne({
+          where: { cnic: args.cnic, password: args.password },
         });
 
         if (!user) {
-          throw new Error("Invalid user email or password");
+          throw new Error("Invalid user cnic or password");
         }
         // Generate a JWT token
         const token = jwt.sign({ userId: user.id }, JWT_SECRET);

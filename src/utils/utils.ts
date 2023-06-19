@@ -6,6 +6,7 @@ export const sendResponse = (
 ) => {
   return res.status(status).json({ status, message, data });
 };
+
 const calculateWallCft = (length: number, height: number, thickness: number) =>
   length * height * thickness;
 
