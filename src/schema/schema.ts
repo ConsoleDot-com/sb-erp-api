@@ -11,8 +11,8 @@ const {
 
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "shhhhh";
-const {User} = require("../model/user.model");
-const {Login} = require("../model/login.model");
+const { User } = require("../model/user.model");
+const { Login } = require("../model/login.model");
 
 // Types
 const UserType = new GraphQLObjectType({
@@ -38,6 +38,7 @@ const RoleType = new GraphQLObjectType({
   }),
 });
 
+// Mutation
 const Mutation = new GraphQLObjectType({
   name: "Mutation",
   fields: {
@@ -90,7 +91,12 @@ const Mutation = new GraphQLObjectType({
         password: { type: GraphQLString },
         role: { type: GraphQLString },
       },
-      resolve(parent, args) {
+      resolve(parent, args, context) {
+        // Ensure the user is authenticated
+        if (!context.user) {
+          throw new Error("Authentication required");
+        }
+
         let role = new Login({
           cnic: args.cnic,
           password: args.password,
