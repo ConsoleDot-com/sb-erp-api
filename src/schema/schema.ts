@@ -8,35 +8,14 @@ const {
   GraphQLList,
   GraphQLNonNull,
 } = require("graphql");
+const XLSX = require('xlsx');
+const path = require('path');
 
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "shhhhh";
 const { User } = require("../model/user.model");
 const { Login } = require("../model/login.model");
-
-// Types
-const UserType = new GraphQLObjectType({
-  name: "User",
-  fields: () => ({
-    id: { type: GraphQLID },
-    firstName: { type: GraphQLString },
-    lastName: { type: GraphQLString },
-    gender: { type: GraphQLString },
-    cnic : { type : GraphQLString},
-    phone : { type : GraphQLString},
-    address : { type : GraphQLString},
-  }),
-});
-
-const RoleType = new GraphQLObjectType({
-  name: "Role",
-  fields: () => ({
-    id: { type: GraphQLID },
-    cnic : { type : GraphQLString},
-    password : { type : GraphQLString},
-    role : { type : GraphQLString},
-  }),
-});
+const { UserType } = require("../types/user.type");
+const { RoleType } = require("../types/role.type");
 
 // Mutation
 const Mutation = new GraphQLObjectType({
@@ -79,7 +58,7 @@ const Mutation = new GraphQLObjectType({
           throw new Error("Invalid user cnic or password");
         }
         // Generate a JWT token
-        const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 
         return token;
       },
@@ -97,7 +76,7 @@ const Mutation = new GraphQLObjectType({
           throw new Error("Authentication required");
         }
 
-        if(args.role === "super admin"){
+        if(args.role === process.env.ADMIN_ROLE){
           throw new Error("Super Admin already exist, please choose other role");
         }
 
@@ -110,7 +89,7 @@ const Mutation = new GraphQLObjectType({
         let role = new Login({
           cnic: args.cnic,
           password: args.password,
-          role: args.role,
+          role: args.role.toLowerCase(),
         });
         return role.save();
       },
@@ -119,16 +98,16 @@ const Mutation = new GraphQLObjectType({
       type: RoleType,
       resolve: async (parent, args) => {
         try {
-          const existingUser = await User.findOne({ cnic: "35201" });
+          const existingUser = await User.findOne({ cnic: process.env.ADMIN_CNIC });
 
           if (existingUser) {
             throw new Error("User with the provided CNIC already exists.");
           }
 
           let role = new Login({
-            cnic: "35201",
-            password: "12345",
-            role: "super admin",
+            cnic: process.env.ADMIN_CNIC,
+            password: process.env.ADMIN_PASSWORD,
+            role: process.env.ADMIN_ROLE,
           });
           return role.save();
         } catch (error) {
@@ -159,6 +138,16 @@ var schema = new GraphQLSchema({
           }
 
           return context.user;
+        },
+      },
+      usersExcel: {
+        type: new GraphQLList(UserType),
+        resolve: () => {
+          const workbook = XLSX.readFile(path.resolve(__dirname, 'data.xlsx'));
+          const sheet = workbook.Sheets["Sheet1"];
+          const rows = XLSX.utils.sheet_to_json(sheet);
+
+          return rows;
         },
       },
     },
